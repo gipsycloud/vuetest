@@ -4,13 +4,15 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-      "dev": "vue-cli-service dev",
+    "dev": "vue-cli-service dev",
     "build": "vue-cli-service build",
-     "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.19.0",
     "core-js": "^2.6.5",
     "vue": "^2.6.10",
+    "vue-router": "^3.1.3",
     "vuetify": "^2.0.0"
   },
   "devDependencies": {
@@ -22,6 +24,8 @@
     "eslint-plugin-vue": "^5.0.0",
     "sass": "^1.17.4",
     "sass-loader": "^7.1.0",
+    "stylus": "^0.54.7",
+    "stylus-loader": "^3.0.2",
     "vue-cli-plugin-vuetify": "^0.6.3",
     "vue-template-compiler": "^2.6.10",
     "vuetify-loader": "^1.2.2"
