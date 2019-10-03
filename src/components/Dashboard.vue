@@ -1,16 +1,8 @@
 <template>
-  <v-card
-    max-width="500"
-    class="mx-auto"
-  >
-    <v-toolbar
-      color="pink"
-      dark
-    >
+  <v-card max-width="500" class="mx-auto">
+    <v-toolbar color="pink" dark>
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
       <v-toolbar-title>Inbox</v-toolbar-title>
-
       <div class="flex-grow-1"></div>
 
       <v-btn icon>
@@ -23,12 +15,8 @@
     </v-toolbar>
 
     <v-list two-line>
-      <v-list-item-group
-        v-model="selected"
-        multiple
-        active-class="pink--text"
-      >
-        <template v-for="(item, index) in items">
+      <v-list-item-group v-model="selected" multiple active-class="pink--text" >
+        <template v-for="(item, index) in itemsToBind">
           <v-list-item :key="item.title">
             <template v-slot:default="{ active, toggle }">
               <v-list-item-content>
@@ -39,27 +27,16 @@
 
               <v-list-item-action>
                 <v-list-item-action-text v-text="item.action"></v-list-item-action-text>
-                <v-icon
-                  v-if="!active"
-                  color="grey lighten-1"
-                >
+                <v-icon v-if="!active" color="grey lighten-1">
                   star_border
                 </v-icon>
 
-                <v-icon
-                  v-else
-                  color="yellow"
-                >
-                  star
-                </v-icon>
+                <v-icon v-else color="yellow" > star</v-icon>
               </v-list-item-action>
             </template>
           </v-list-item>
 
-          <v-divider
-            v-if="index + 1 < items.length"
-            :key="index"
-          ></v-divider>
+          <v-divider v-if="index + 1 < items.length" :key="index"></v-divider>
         </template>
       </v-list-item-group>
       <div class="edit-btn">
@@ -69,47 +46,32 @@
       </div>
     </v-list>
     <div class="text-center">
-      <v-dialog
-      v-model="dialog"
-      width="500"
-      >
-      <template v-slot:activator="{ on }">
-        <!-- <v-btn
-        color="red lighten-2"
-        dark
-        v-on="on"
-        >
-        Click Me
-      </v-btn> -->
-    </template>
+      <v-dialog v-model="dialog" width="500" >
+      <template v-slot:activator="{ on }"></template>
 
-    <v-card>
-      <v-card-title
-      class="headline grey lighten-2"
-      primary-title
-      >
-      Privacy Policy
-    </v-card-title>
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title > Privacy Policy </v-card-title>
 
-    <v-card-text>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </v-card-text>
+        <v-card-text>
+          {{ newMessage }}
+          <v-form v-model="valid">
+            <v-container>
+              <v-text-field v-model="newMessage.headline" label="headline"></v-text-field>
+              <v-text-field v-model="newMessage.title" label="title"></v-text-field>
+              <v-text-field v-model="newMessage.subtitle" label="subtitle"></v-text-field>
+            </v-container>
+          </v-form>
+        </v-card-text>
 
-    <v-divider></v-divider>
+        <v-divider></v-divider>
 
-    <v-card-actions>
-      <div class="flex-grow-1"></div>
-      <v-btn
-      color="primary"
-      text
-      @click="dialog = false"
-      >
-      I accept
-    </v-btn>
-  </v-card-actions>
-</v-card>
-</v-dialog>
-</div>
+        <v-card-actions>
+          <div class="flex-grow-1"></div>
+          <v-btn color="primary" text @click="dialog = false" >Add</v-btn>
+        </v-card-actions>
+      </v-card>
+      </v-dialog>
+    </div>
   </v-card>
 </template>
 
@@ -118,6 +80,7 @@
     data: () => ({
       selected: [2],
       dialog: false,
+      newMessage: {},
       items: [
         {
           action: '15 min',
@@ -151,6 +114,33 @@
         },
       ],
     }),
+    computed: {
+      itemsToBind: function () {
+        this.items.forEach(function(item) {
+          if(item.time) {
+            var diff = Math.abs(new Date() - item.time)
+            var mins = Math.floor((diff/1000)/60)
+            item.action = mins = ' min'
+          }
+        })
+        return this.items;
+      }
+    },
+    methods: {
+      addMessage () {
+        this.newMessage.time = new Date();
+        this.items.push({...this.newMessage});
+        this.dialog = false;
+      },
+      toggle(index) {
+        const i = this.selected.indexOf(index);
+        if (i > -1) {
+          this.selected.splice(i, 1);
+        } else {
+          this.selected.push(index);
+        }
+      }
+    }
   }
 </script>
 <style media="screen">
