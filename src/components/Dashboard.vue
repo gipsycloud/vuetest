@@ -63,7 +63,7 @@
         </template>
       </v-list-item-group>
       <div class="edit-btn">
-        <v-btn class="mx-2" fab dark color="indigo">
+        <v-btn @click="dialog = true" class="mx-2" fab dark color="indigo">
           <v-icon dark>mdi-plus</v-icon>
         </v-btn>
       </div>
@@ -74,13 +74,13 @@
       width="500"
       >
       <template v-slot:activator="{ on }">
-        <v-btn
+        <!-- <v-btn
         color="red lighten-2"
         dark
         v-on="on"
         >
         Click Me
-      </v-btn>
+      </v-btn> -->
     </template>
 
     <v-card>
@@ -117,6 +117,7 @@
   export default {
     data: () => ({
       selected: [2],
+      dialog: false,
       items: [
         {
           action: '15 min',
